@@ -7,7 +7,7 @@
 - go to C:\xampp\apache\conf\extra\httpd-vhosts.conf
 - add entry
 
-```json
+```
 <VirtualHost *:80>
     ServerAdmin <EMAIL>
     DocumentRoot "C:/xampp/htdocs/develop/symfony-example/public/"
@@ -17,7 +17,7 @@
 
 - on your system add to your `\ect\hosts`
 
-```json
+```
 127.0.0.1 symfony-example.local
 ```
 
