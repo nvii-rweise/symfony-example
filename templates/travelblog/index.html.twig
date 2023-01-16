@@ -1,11 +1,33 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} | Wunderschönes Slowenien{% endblock %}
+{% block title %}Wundervolles Slowenien |
+	{{ parent() }}
+{% endblock %}
 
 {% block body %}
-<h1>{{title}}</h1>
-
-<div>
-    TODO: Landingpage
-</div>
+	<div class="container">
+		<h1 class="d-inline me-3">{{title}}</h1>
+		<div class="row mt-5">
+			<div class="col-12 col-md-4">
+				<img class="rounded float-left img-fluid" src="{{ asset("church.jpg") }}">
+			</div>
+			<div class="col-12 col-md-8 ps-5">
+				<h2 class="mb-4">{{ days|length }}
+					Tage Erlebnis</h2>
+				{% for day in days %}
+					<div class="day-list">
+						<div class="d-flex mb-3">
+							<a href="{{ path("app_route_day", { 'dayNumber': day.id }) }}">
+								<i class="fas fa-play me-3"></i>
+							</a>
+							<span class="day-details">Tag
+								{{day.id}}
+								-
+								{{day.title}}</span>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 {% endblock %}

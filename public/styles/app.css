@@ -1,0 +1,61 @@
+* {
+  font-style: normal;
+  font-family: Helvetica, Arial, Sans-Serif;
+}
+
+body {
+  background-color: #2b6777;
+  color: #ffffff;
+}
+
+button {
+  background-color: #ffffff;
+  color: #000000;
+  margin-right: 10px;
+  border-radius: 20%;
+  padding: 1em;
+}
+
+.buttonNavList {
+  margin-top: 2rem;
+}
+
+.buttonNavList a {
+  background-color: #ffffff;
+  color: #000000;
+  margin-right: 10px;
+  border-radius: 30%;
+  padding: 1em;
+}
+
+.day-list i {
+  margin-top: 7px;
+}
+
+.day-list a {
+  color: #ffffff;
+}
+
+.day-details {
+  background-color: #f2f2f24f;
+  border-radius: 5px;
+  padding: 5px;
+  color: #000000;
+}
+
+.category-list li {
+  margin-right: 5px;
+}
+
+#nav-bar {
+  background-color: #52ab98;
+  color: #000000;
+}
+
+#footer {
+  color: #ffffff;
+}
+
+.day-container {
+  border-radius: 5px;
+}

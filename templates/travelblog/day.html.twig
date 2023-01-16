@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{parent()}}
+	| Übersicht
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div>
+			<h2 class="mt-5">{{title}}</h2>
+			<div class="row">
+				<div class="col col-sm">
+					<img src="https://via.placeholder.com/300" data-src="https://via.placeholder.com/300" alt="Square placeholder img">
+				</div>
+				<div class="col col-sm">
+					<div class="day-container p-3 text-center">
+						<p class="mt-2">
+							<strong>{{day.title}}</strong>
+						</p>
+						<span>{{day.text}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="buttonNavList row d-flex justify-content-center">
+				{% if prevDayNumber > 0 %}
+					<a class="button btn btn-sm col col-sm-1" href="{{ path('app_route_day', { 'dayNumber': prevDayNumber }) }}">
+						<i class="fa-solid fa-backward"></i>
+					</a>
+				{% endif %}
+				{% if nextDayNumber > 0 %}
+					<a class="button btn btn-sm col col-sm-1" href="{{ path('app_route_day', { 'dayNumber': nextDayNumber }) }}">
+						<i class="fa-solid fa-forward"></i>
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
