@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Days;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\CacheItem;
@@ -12,10 +14,9 @@ use Symfony\Contracts\Cache\CacheInterface;
 class TravelController extends AbstractController
 {
     #[Route("/", name: "app_route_index")]
-    public function index(CacheInterface $cache): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
-        dump($cache);
-        $days = $this->getDays($cache);
+        $days = $this->getDays($doctrine);
         return $this->render("travelblog/index.html.twig", [
             "title" => "Reiseblog",
             "days" => $days
@@ -23,9 +24,9 @@ class TravelController extends AbstractController
     }
 
     #[Route("/day/{dayNumber}", name: "app_route_day")]
-    public function day(CacheInterface $cache, int $dayNumber): Response
+    public function day(ManagerRegistry $doctrine, int $dayNumber): Response
     {
-        $days = $this->getDays($cache);
+        $days = $this->getDays($doctrine);
         $nextDay = count($days) === $dayNumber ? 0 : $dayNumber + 1;
         $prevDay = $dayNumber === 1 ? 0 : $dayNumber - 1;
         $day = $days[$dayNumber - 1];
@@ -39,25 +40,10 @@ class TravelController extends AbstractController
         }
     }
 
-    private function getDays(CacheInterface $cache): array
+    private function getDays(ManagerRegistry $doctrine): array
     {
-        $days = $cache->get('all_days', function (CacheItemInterface $cacheItem) {
-            $cacheItem->expiresAfter(30);
-            return [
-                ["id" => "1", "title" => "Let's go!", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "2", "title" => "Wer braucht schon Fahrbahnmarkierung", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "3", "title" => "Motorkontrollleuchte", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "4", "title" => "Haben wir Diesel getankt?", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "5", "title" => "Eishöhlen", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "6", "title" => "Italien wir kommen!", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "7", "title" => "Vendig!", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "8", "title" => "Strand", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "9", "title" => "Sonne wir kommen!", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "10", "title" => "Slowenien", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."],
-                ["id" => "11", "title" => "Lecker Essen!", "text" => "Eu consequat voluptate laborum nostrud consequat in cillum nisi sit est in magna sit. Irure adipisicing eiusmod incididunt adipisicing sint amet Lorem magna cupidatat incididunt proident dolore. Ea voluptate Lorem nisi aliqua enim sint adipisicing do aliqua reprehenderit id id magna."]
-            ];
-        });
-
-        return $days;
+        $entityManager = $doctrine->getManager();
+        $oDays = $entityManager->getRepository(Days::class)->findAll();
+        return $oDays;
     }
 }
